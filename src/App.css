@@ -1,0 +1,26 @@
+
+html {
+    scroll-behavior: smooth;
+  }
+
+  .scroll-adside{
+    scrollbar-width: thin; /* O puede ser auto o none */
+    scrollbar-color: #22c55ec5 #f1f1f1; /* thumb color seguido del track color */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  td {
+    word-wrap: break-word; /* Permitir que el texto haga salto de línea */
+    overflow-wrap: break-word; /* Compatibilidad con navegadores más antiguos */
+    white-space: normal; /* Permitir que el texto se ajuste a la celda */
+  }
