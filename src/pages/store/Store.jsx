@@ -14,7 +14,7 @@ export default function Store() {
   const [loading, setLoading] = useState(true);
 
   // Filtrar cultivos basado en la categoría seleccionada y el término de búsqueda
-  const filteredCultivos =data && data.length > 0 && data.filter(cultivo =>
+  const filteredCultivos =data && data.length > 0 && Array.isArray(data) && data.filter(cultivo =>
     (selectedCategory === 'All' || cultivo.categoria === selectedCategory) &&
     (cultivo?.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       cultivo?.departamento?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -22,21 +22,27 @@ export default function Store() {
   );
 
   useEffect(() => {
-    // Usa Promise.all para realizar ambas solicitudes en paralelo
     Promise.all([
       reqtsApiForm("v1/cultivos_all", "GET", {}),
       reqtsApiForm("v1/categorias", "GET", {})
     ])
       .then(([cultivos, categorias]) => {
-        const resultCategorias = [{ id: 99, nombre: "All" }, ...categorias];
-        setData(cultivos);
+        // Si la petición de categorías falla, crea un array con "All"
+        const resultCategorias = categorias && Array.isArray(categorias)
+          ? [{ id: 99, nombre: "All" }, ...categorias]
+          : [{ id: 99, nombre: "All" }]; // Categoría "All" por defecto
+  
+        setData(cultivos || []); // Si falla cultivos, establece un array vacío
         setdataCategorias(resultCategorias);
         setLoading(false); 
       })
       .catch((error) => {
+        setData([]); 
+        setdataCategorias([{ id: 99, nombre: "All" }]); // Crear "All" si hay error
         setLoading(false); 
       });
   }, []);
+  
 
 
   return (

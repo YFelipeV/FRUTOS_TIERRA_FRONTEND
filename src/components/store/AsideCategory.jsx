@@ -14,7 +14,7 @@ export default function AsideCategory(props) {
             {/* Scroll vertical para las categorías */}
             <div className="max-h-[518px] scroll-adside overflow-y-scroll">
                 <ul className="space-y-2">
-                    {dataCategorias && dataCategorias.length > 0 && dataCategorias.map(category => (
+                    {dataCategorias && dataCategorias.length > 0 && Array.isArray(dataCategorias) && dataCategorias.map(category => (
                         <li key={category.id} className="flex items-center">
                             <input
                                 type="checkbox"

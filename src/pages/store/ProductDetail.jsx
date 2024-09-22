@@ -45,18 +45,22 @@ export default function ProductDetail() {
     setloading(true)
     reqtsApiForm(`v1/cultivos/${id}`, "GET", {})
       .then((res) => {
-        setdata(res)
-        const imgs = res.imagenes && res.imagenes.length > 0
-          ? res.imagenes.map((img) => ({
-            url: `${img.url}`,
-          }))
-          : [
-            { url: "https://placehold.co/400x1200" },
-            { url: "https://placehold.co/400x1200" },
-            { url: "https://placehold.co/400x1200" },
-          ];
+        if(res){
+          setdata(res)
+          const imgs = res.imagenes && res.imagenes.length > 0
+            ? res.imagenes.map((img) => ({
+              url: `${img.url}`,
+            }))
+            : [
+              { url: "https://placehold.co/400x1200" },
+              { url: "https://placehold.co/400x1200" },
+              { url: "https://placehold.co/400x1200" },
+            ];
+  
+          setcarouselImages(imgs)
+          setloading(false)
+        }
 
-        setcarouselImages(imgs)
         setloading(false)
       })
 
