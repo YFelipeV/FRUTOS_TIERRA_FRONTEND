@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/navigation/Header';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { reqtsApiForm } from '../../config/utils';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight,ArrowLeft } from 'lucide-react';
 import { API,  API_FRONTEND,  PHONE } from '../../config/enviroment';
 import { Spinner } from 'react-bootstrap';
 
@@ -134,9 +134,9 @@ export default function ProductDetail() {
                 <button 
                   className="w-full w-[100%] bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300"
                 >
-   <a
+                <a
                   href={`https://api.whatsapp.com/send/?phone=${PHONE}&text=Hola%2C+Estoy+interesado+en+este+cultivo+${encodeURIComponent(`${API_FRONTEND}/product/${data.id}`)}%2F++me+podrias+brindar+mas+informacion&type=phone_number&app_absent=0`}
-                  className="w-full w-[100%] bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-300"
+                  className="w-full w-[100%]  text-white py-2 px-4 rounded-md  transition duration-300"
                   target='_blank'
                   >
                   Contactar

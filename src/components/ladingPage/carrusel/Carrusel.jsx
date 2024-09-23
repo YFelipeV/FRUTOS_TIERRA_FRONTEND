@@ -22,34 +22,51 @@ export default function Carrusel() {
         setCurrentSlide((prev) => (prev - 1 + data.length) % data.length);
     };
     useEffect(() => {
-        reqtsApiForm("v1/sliders", "GET", {},false)
-            .then((res) => {
-                if(res.status){
-                    if (res && res.sliders.length > 0) {
-                        setdata(res.sliders)
-                    } else {
-                        setdata(carouselImages)
-                    }
-                }else{
-                    setdata(carouselImages)
 
-                }
+        let isMounted = true;
+        
+        // Función para obtener los sliders
+        const fetchSliders = async () => {
+            try {
+                const res = await reqtsApiForm("v1/sliders", "GET", {}, false);
                 
-            })
+                if (res && res.status && res.sliders && res.sliders.length > 0) {
+                    if (isMounted) {
+                        setdata(res.sliders); // Solo si hay sliders válidos
+                    }
+                } else {
+                    if (isMounted) {
+                        setdata(carouselImages); // Si no hay sliders válidos, usar los predeterminados
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching sliders:', error);
+                if (isMounted) {
+                    setdata(carouselImages); 
+                }
+            }
+        };
+    
+        fetchSliders();
+    
+        return () => {
+            isMounted = false;
+        };
+    }, [carouselImages]); 
 
-    }, [])
+
     return (
         <div className="relative">
             <div className="overflow-hidden h-[400px]">
                 {data && data.length > 0 && data.map((img, index) => (
-                <img
-                    key={index}
-                    src={ img.url ? `${img.url}` : img}
-                    alt={`Slide ${index + 1}`}
-                    className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
-                        }`}
-                />
-                    ))}
+                    <img
+                        key={index}
+                        src={img.url ? `${img.url}` : img}
+                        alt={`Slide ${index + 1}`}
+                        className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+                            }`}
+                    />
+                ))}
             </div>
             <button onClick={prevSlide} className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
                 <ChevronLeft />
